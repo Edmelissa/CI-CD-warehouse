@@ -23,11 +23,11 @@ jobs:
       - name: Setup Java # Use the actions/setup-java action to set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: ’11’ # Set up JDK 11
-          distribution: ‘adopt’ # Use the AdoptOpenJDK distribution
+          java-version: '11' # Set up JDK 11
+          distribution: 'adopt' # Use the AdoptOpenJDK distribution
       - name: Make gradlew executable # Make the Gradle wrapper script executable
         run: chmod +x ./gradlew # Add this line to make gradlew executable
-        
+
       - name: Build Ktor application # Run the Gradle task to build the Ktor application
         run: ./gradlew assemble
 
@@ -39,8 +39,8 @@ jobs:
     - name: Setup Java # Use the actions/setup-java action to set up Java
       uses: actions/setup-java@v2
       with:
-        java-version: ’11’ # Set up JDK 11
-        distribution: ‘adopt’ # Use the AdoptOpenJDK distribution
+        java-version: '11' # Set up JDK 11
+        distribution: 'adopt' # Use the AdoptOpenJDK distribution
     - name: Make gradlew executable # Make the Gradle wrapper script executable
       run: chmod +x ./gradlew
 
