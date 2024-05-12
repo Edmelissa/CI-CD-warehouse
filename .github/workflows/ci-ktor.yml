@@ -5,75 +5,43 @@ name: Ktor CI Pipeline
 # Specify the events that trigger the CI pipeline: push to master branch and pull requests targeting master
 
 on:
+  push:
+    branches:
+      - master
 
-push:
-
-branches:
-
-– master
-
-pull_request:
-
-branches:
-
-– master
+  pull_request:
+    branches:
+      - master
 
 # Define the jobs to be executed in the CI pipeline
-
 jobs:
+  # Job for building the Ktor application
+  build:
+    runs-on: ubuntu-latest # Use the latest Ubuntu environment for this job
+  steps:
+    - uses: actions/checkout@v2 # Check out the repository code
+    - name: Setup Java # Use the actions/setup-java action to set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: ’11’ # Set up JDK 11
+        distribution: ‘adopt’ # Use the AdoptOpenJDK distribution
+    - name: Make gradlew executable # Make the Gradle wrapper script executable
+      run: chmod +x ./gradlew # Add this line to make gradlew executable
+    - name: Build Ktor application # Run the Gradle task to build the Ktor application
+      run: ./gradlew assemble
 
-# Job for building the Ktor application
-
-build:
-
-runs-on: ubuntu-latest # Use the latest Ubuntu environment for this job
-
-steps:
-
-– uses: actions/checkout@v2 # Check out the repository code
-
-– name: Setup Java # Use the actions/setup-java action to set up Java
-
-uses: actions/setup-java@v2
-
-with:
-
-java-version: ’11’ # Set up JDK 11
-
-distribution: ‘adopt’ # Use the AdoptOpenJDK distribution
-
-– name: Make gradlew executable # Make the Gradle wrapper script executable
-
-run: chmod +x ./gradlew # Add this line to make gradlew executable
-
-– name: Build Ktor application # Run the Gradle task to build the Ktor application
-
-run: ./gradlew assemble
-
-# Job for testing the Ktor application
-
-test:
-
-runs-on: ubuntu-latest # Use the latest Ubuntu environment for this job
-
-steps:
-
-– uses: actions/checkout@v2 # Check out the repository code
-
-– name: Setup Java # Use the actions/setup-java action to set up Java
-
-uses: actions/setup-java@v2
-
-with:
-
-java-version: ’11’ # Set up JDK 11
-
-distribution: ‘adopt’ # Use the AdoptOpenJDK distribution
-
-– name: Make gradlew executable # Make the Gradle wrapper script executable
-
-run: chmod +x ./gradlew
-
-– name: Run Ktor tests # Run the Gradle task to execute Ktor tests
-
-run: ./gradlew test
+  # Job for testing the Ktor application
+  test:
+    runs-on: ubuntu-latest # Use the latest Ubuntu environment for this job
+    steps:
+    - uses: actions/checkout@v2 # Check out the repository code
+    - name: Setup Java # Use the actions/setup-java action to set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: ’11’ # Set up JDK 11
+        distribution: ‘adopt’ # Use the AdoptOpenJDK distribution
+    - name: Make gradlew executable # Make the Gradle wrapper script executable
+      run: chmod +x ./gradlew
+      
+    - name: Run Ktor tests # Run the Gradle task to execute Ktor tests
+      run: ./gradlew test
